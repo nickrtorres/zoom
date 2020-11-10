@@ -20,26 +20,28 @@ def main():
     if len(sys.argv) != 2:
         fatal(f'usage: {APP} <id>')
     else:
-        id = sys.argv[1]
+        zid = sys.argv[1]
 
     rooms = os.getenv('ZOOM_ROOMS')
 
     try:
         with open(rooms, 'r') as f:
-            d = json.load(f)
-            cmd = f'open -a Safari {d[id]}'
-            subprocess.run(cmd.split())
+            db = json.load(f)
+            cmd = f'open -a Safari {db[zid]}'
+            subprocess.run(cmd.split(), check=True)
 
     except FileNotFoundError:
         fatal(f'file not found => {rooms}')
     except KeyError:
-        fatal(f'invalid id => {id}')
+        fatal(f'invalid id => {zid}')
     except TypeError:
         # NB: `os.getenv` returned None and we tried to open it.
         # This is a bit of a hack but c'mon -- it's only a 40 line script.
         fatal('ZOOM_ROOMS environment variable not set')
     except json.decoder.JSONDecodeError:
         fatal(f'malformed zoom room file => {rooms}')
+    except subprocess.CalledProcessError:
+        fatal('could not open safari')
 
 
 if __name__ == '__main__':
