@@ -5,7 +5,7 @@ import os
 import subprocess
 import sys
 
-APP = sys.argv[0]
+APP = os.path.basename(sys.argv[0])
 
 
 def fatal(msg):
