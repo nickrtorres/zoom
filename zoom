@@ -22,9 +22,8 @@ def main():
     else:
         zid = sys.argv[1]
 
-    rooms = os.getenv('ZOOM_ROOMS')
-
     try:
+        rooms = os.getenv('ZOOM_ROOMS')
         with open(rooms, 'r') as f:
             db = json.load(f)
             cmd = f'open -a Safari {db[zid]}'
