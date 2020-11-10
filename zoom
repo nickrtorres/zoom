@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import subprocess
+import sys
+
+APP = sys.argv[0]
+
+
+def fatal(msg):
+    print(f'{APP}: error: {msg}', file=sys.stderr)
+    sys.exit(1)
+
+
+def main():
+    if sys.platform.lower() != 'darwin':
+        fatal('this program expects macOS')
+
+    if len(sys.argv) != 2:
+        fatal(f'usage: {APP} <id>')
+    else:
+        id = sys.argv[1]
+
+    rooms = os.getenv('ZOOM_ROOMS')
+
+    try:
+        with open(rooms, 'r') as f:
+            d = json.load(f)
+            cmd = f'open -a Safari {d[id]}'
+            subprocess.run(cmd.split())
+
+    except FileNotFoundError:
+        fatal(f'file not found => {rooms}')
+    except KeyError:
+        fatal(f'invalid id => {id}')
+    except TypeError:
+        # NB: `os.getenv` returned None and we tried to open it.
+        # This is a bit of a hack but c'mon -- it's only a 40 line script.
+        fatal('ZOOM_ROOMS environment variable not set')
+    except json.decoder.JSONDecodeError:
+        fatal(f'malformed zoom room file => {rooms}')
+
+
+if __name__ == '__main__':
+    main()

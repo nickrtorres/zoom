@@ -1,0 +1,16 @@
+`zoom` is a CLI app to open a zoom link from a json file on disk. You must
+point `zoom` to your json file with the environment variable 'ZOOM_ROOMS'. Once
+this is set, invoke `zoom` and pass a room id to it. This will open the link in
+Safari that matches the id given.
+
+For simplicity, this only works on macOS as it relies on `open(1)` and Safari.
+
+Example json file
+-----------------
+{
+  "my-room": "<your zoom link here>"
+}
+
+Example invocation
+------------------
+% zoom my-room
