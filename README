@@ -3,7 +3,7 @@ point `zoom` to your json file with the environment variable 'ZOOM_ROOMS'. Once
 this is set, invoke `zoom` and pass a room id to it. This will open the link
 that matches the id or fail with an error.
 
-For simplicity, this only works on macOS as it relies on `open(1)` and Safari.
+For simplicity, this only works on macOS as it relies on `open(1)`.
 
 Example json file
 -----------------
